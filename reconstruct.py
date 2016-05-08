@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# encoding: utf-8
 
 import math
 import random
@@ -13,10 +12,9 @@ import scipy
 import matplotlib.pyplot as plt
 import numpy as np
 
+def l(x,y,z):
+    def rect(a):
+        return 1 if (-D/2 <= a <= D/2) else 0
+    return delta(x, y) * rect(z)
 
-def dft_3D(arr):
-    # TODO check that this actually computes the 3d transform
-    return np.fft.fftn(arr)
 
-def inv_2D(arr):
-    return np.fft.ifft2(arr)

@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# encoding: utf-8
+
 """MRCFile - read and write image data in the MRC file format.
 
 Example:
@@ -36,7 +39,6 @@ Please send bugs and comments to dynerman@berkeley.edu
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-from __future__ import print_function
 
 import sys
 import struct
