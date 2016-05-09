@@ -33,7 +33,6 @@ def project_fst(mol, R):
 
     # generating the interpolater
     grid_step = np.linspace(0, l - 1, l)
-    # interpolated_grid = scipy.interpolate.NearestNDInterpolator((grid_step, grid_step, grid_step), F)
     interpolated_grid = scipy.interpolate.RegularGridInterpolator((grid_step, grid_step, grid_step), F)
 
     # generating output 2D data

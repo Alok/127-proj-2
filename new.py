@@ -35,6 +35,7 @@ def rodrigues_rotation(v, viewing_dir, angle):
     # k is unit vector describing an axis of rotation
     cross = np.cross
 
+
     a = viewing_dir[:,0]
     b = viewing_dir[:,1]
     ab = np.cross(a, b)
@@ -49,3 +50,4 @@ def rodrigues_rotation(v, viewing_dir, angle):
 
     # 3D dft mol
     # extract slice where z =0
+
