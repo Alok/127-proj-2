@@ -16,27 +16,22 @@ def reconstruct(images, orientations):
     corresponding image.
     We assume that the images are produced using our own projection_fst.
     So the image is a square with length equals the original length of mol."""
-    # N is the length of mol
-    N = len(images[0])
+    # D is the length of mol
+    D = len(images[0])
 
     # Generate the first back projection
-    B_1 = np.zeros((N, N, N))
-    I_0 = images[0]
-
-    # fill array with I_0
-    # B_1[:, :, :] = I_0
-    B_1[:] = I_0
+    B = np.zeros((D, D, D))
 
     # For rest of images, calculate the back projection
-    for n in xrange(1, len(images)):
-        I_i = images[n]
-        R = orientations[n]
-        B_i = np.zeros((N, N, N))
+    for i in xrange(len(images)):
+        I_i = images[i]
+        R = orientations[i]
+        B_i = np.zeros((D, D, D))
 
         B_1[:] = I_i
 
         # generating the interpolater
-        N_range = np.linspace(-1, 1, N)
+        N_range = np.linspace(-1, 1, D)
         gri_image = scipy.interpolate.RegularGridInterpolator((N_range, N_range, N_range), B_i, bounds_error=False, fill_value=0)
 
         # rotating the molecule
@@ -45,23 +40,33 @@ def reconstruct(images, orientations):
         C = [x.flatten(), y.flatten(), z.flatten()]
 
         B_i = gri_image(np.dot(R.T, C).T)
-        B = np.add(B_1, B_i)
+        B += B_i
 
     P = np.fft.fftn(np.fft.fftshift(B))
 
-    for i in xrange(N):
-        for j in xrange(N):
-            for k in xrange(N):
+    H = np.indices(B.shape)
 
-                H = 0
-                temp = np.asarray( [- (N - 1) / 2 + j, (N - 1) / 2 + i, - (N - 1) / 2 + k])
+    def transform_coordinates(v):
+        """
+        v:  (3,) vector of indices
+        output: (x, y, z) tuple of coordinates
+        """
+        i, j, k = v[0], v[1], v[2]
+        return np.array( [- (D - 1) / 2 + j, (D - 1) / 2 + i, - (D - 1) / 2 + k])
 
-                for n in xrange(0, len(images)):
-                    val = np.dot(temp.T, orientations[n][2])
-                    H = H + (math.sin(N * (math.pi) * val) / math.pi * val)
+    transform = np.vectorize(transform_coordinates)
 
-                P[i][j][k] = P[i][j][k] * (1 / H)
+    v = 
+
+    def calculate_H(vec):
+        h = 0
+        for i in xrange(len(images)):
+            h += (np.sinc(D * np.dot(vec, orientations[i])))
+            return np.sum( [np.sinc(D * np.dot( vec, orientation)) for orientation in orientations])
+
+    P = B / H
 
     P = np.fft.ifftn(np.fft.ifftshift(P))
 
     return P
+
