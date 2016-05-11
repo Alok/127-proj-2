@@ -3,4 +3,4 @@
 /fig/
 *.pdf
 /**/*.png
-
+/extras/

@@ -83,6 +83,7 @@ class MRCFile:
 
     header = None
 
+    # @profile
     def __init__(self, filename):
         self.mrc_fd = open(filename, 'r')
 
@@ -127,6 +128,7 @@ class MRCFile:
 
         assert self.vol > 0
 
+    # @profile
     def write_file(self,filename,overwrite=False):
         # Write MRC data to filename
 
@@ -153,6 +155,7 @@ class MRCFile:
 
         out_fd.close()
 
+    # @profile
     def load_all_slices(self):
         self.mrc_fd.seek(self.header_size + self.header.nsymbt)
 
@@ -164,6 +167,7 @@ class MRCFile:
         self.slices = np.array(struct.unpack(all_format_string, self.mrc_fd.read(all_byte_size)))
         self.slices = self.slices.reshape((self.header.nz, self.header.nx, self.header.ny))
 
+    # @profile
     def get_images(self, image_indices=None):
         if image_indices is None:
             image_indices = range(self.header.nz)
@@ -179,6 +183,8 @@ class MRCFile:
 
         return images
 
+    # @profile
     def close(self):
         self.mrc_fd.close()
         self.mrc_fd = None
+
